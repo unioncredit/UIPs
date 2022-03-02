@@ -88,7 +88,7 @@ describe("Drip UNION tokens to Arbitrum", async () => {
             unionTokenAddress,
             treasuryAddress: _treasuryAddress,
             arbConnectorAddress: _arbConnectorAddress
-        } = require(`./addresses.js`)(await getChainId());
+        } = require(`./addresses.js`)[await getChainId()];
         treasuryAddress = _treasuryAddress;
         arbConnectorAddress = _arbConnectorAddress;
         console.log({governorAddress, unionTokenAddress, treasuryAddress, arbConnectorAddress});
