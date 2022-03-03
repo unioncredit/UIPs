@@ -14,6 +14,14 @@ module.exports = {
             },
             allowUnlimitedContractSize: true
         },
+        rinkeby: {
+            url: "https://rinkeby.infura.io/v3/" + process.env.INFURA_ID,
+            accounts: process.env.PRIVATE_KEY
+                ? [process.env.PRIVATE_KEY]
+                : {
+                      mnemonic: process.env.MNEMONIC ? process.env.MNEMONIC : process.env.MNEMONIC_TEST
+                  }
+        },
         kovan: {
             url: "https://kovan.infura.io/v3/" + process.env.INFURA_ID,
             accounts: process.env.PRIVATE_KEY

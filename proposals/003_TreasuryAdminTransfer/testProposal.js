@@ -7,7 +7,7 @@ require("chai").should();
 const ethUser = "0x07f0eb0c571B6cFd90d17b5de2cc51112Fb95915"; //An address with eth
 const unionUser = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
 
-let defaultAccount, governorProxy, unionToken, treasuryAddress, arbConnectorAddress;
+let defaultAccount, governorProxy, unionToken, treasuryAddress, timelockAddress;
 
 const voteProposal = async governor => {
     let res;
@@ -40,7 +40,7 @@ const voteProposal = async governor => {
     await governor["execute(uint256)"](proposalId);
 };
 
-describe("Drip UNION tokens to Arbitrum", async () => {
+describe("Transfer treasury's admin to Timelock", async () => {
     before(async () => {
         await network.provider.request({
             method: "hardhat_reset",
@@ -48,7 +48,7 @@ describe("Drip UNION tokens to Arbitrum", async () => {
                 {
                     forking: {
                         jsonRpcUrl: "https://eth-mainnet.alchemyapi.io/v2/" + process.env.ALCHEMY_API_KEY,
-                        blockNumber: 14300846
+                        blockNumber: 14305300
                     }
                 }
             ]
@@ -56,7 +56,6 @@ describe("Drip UNION tokens to Arbitrum", async () => {
         [defaultAccount] = await ethers.getSigners();
         ethSigner = await ethers.getSigner(ethUser);
         unionSigner = await ethers.getSigner(unionUser);
-        treasuryAdmin = await ethers.getSigner("0xD83b4686e434B402c2Ce92f4794536962b2BE3E8");
         await network.provider.request({
             method: "hardhat_impersonateAccount",
             params: [ethSigner.address]
@@ -65,10 +64,7 @@ describe("Drip UNION tokens to Arbitrum", async () => {
             method: "hardhat_impersonateAccount",
             params: [unionSigner.address]
         });
-        await network.provider.request({
-            method: "hardhat_impersonateAccount",
-            params: [treasuryAdmin.address]
-        });
+
         // Send ETH to account
         await ethSigner.sendTransaction({
             to: defaultAccount.address,
@@ -78,20 +74,16 @@ describe("Drip UNION tokens to Arbitrum", async () => {
             to: unionSigner.address,
             value: parseUnits("10")
         });
-        await ethSigner.sendTransaction({
-            to: treasuryAdmin.address,
-            value: parseUnits("10")
-        });
 
         const {
             governorAddress,
             unionTokenAddress,
             treasuryAddress: _treasuryAddress,
-            arbConnectorAddress: _arbConnectorAddress
+            timelockAddress: _timelockAddress
         } = require(`./addresses.js`)[await getChainId()];
         treasuryAddress = _treasuryAddress;
-        arbConnectorAddress = _arbConnectorAddress;
-        console.log({governorAddress, unionTokenAddress, treasuryAddress, arbConnectorAddress});
+        timelockAddress = _timelockAddress;
+        console.log({governorAddress, unionTokenAddress, treasuryAddress, timelockAddress});
 
         const UnionGovernorABI = require("../../abis/UnionGovernor.json");
         const UnionTokenABI = require("../../abis/UnionToken.json");
@@ -101,21 +93,9 @@ describe("Drip UNION tokens to Arbitrum", async () => {
         await unionToken.connect(unionSigner).delegate(defaultAccount.address);
     });
 
-    it("Transfer treasury admin", async () => {
-        const {timelockAddress} = require(`./addresses.js`)(await getChainId());
-        console.log({timelockAddress, treasuryAddress});
-
-        const TreasuryABI = require("../../abis/Treasury.json");
-        const treasury = await ethers.getContractAt(TreasuryABI, treasuryAddress);
-        await treasury.connect(treasuryAdmin).changeAdmin(timelockAddress);
-        const pendingAdmin = await treasury.newAdmin();
-        console.log({pendingAdmin});
-    });
-
     it("Submit proposal", async () => {
         const {targets, values, sigs, calldatas, msg} = await getProposalParams({
-            treasuryAddress,
-            arbConnectorAddress
+            treasuryAddress
         });
 
         await governorProxy["propose(address[],uint256[],string[],bytes[],string)"](
@@ -132,7 +112,9 @@ describe("Drip UNION tokens to Arbitrum", async () => {
     });
 
     it("Validate results from new governor", async () => {
-        const connBalance = await unionToken.balanceOf(arbConnectorAddress);
-        console.log(connBalance);
+        const TreasuryABI = require("../../abis/Treasury.json");
+        const treasury = await ethers.getContractAt(TreasuryABI, treasuryAddress);
+        const newAdmin = await treasury.admin();
+        newAdmin.should.eq(timelockAddress);
     });
 });
