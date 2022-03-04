@@ -15,15 +15,34 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
     if (latestProposalId != 0) {
         const proposersLatestProposalState = await governor.state(latestProposalId);
         if (proposersLatestProposalState == 1) {
-            throw new Error("found an already active proposal");
+            throw new Error("Proposer already has an active proposal");
         } else if (proposersLatestProposalState == 0) {
-            throw new Error("found an already pending proposal");
+            throw new Error("Proposer already has a pending proposal");
         }
     }
 
-    const {targets, values, sigs, calldatas, msg} = await getProposalParams({
+    const {targets, values, sigs, calldatas, signedCalldatas, msg} = await getProposalParams({
         treasuryAddress
     });
+
+    const keccak256 = ethers.utils.keccak256;
+    let myBuffer = [];
+    let buffer = new Buffer.from(msg);
+
+    for (let i = 0; i < buffer.length; i++) {
+        myBuffer.push(buffer[i]);
+    }
+
+    const proposalId = await governor["hashProposal(address[],uint256[],bytes[],bytes32)"](
+        targets,
+        values,
+        signedCalldatas,
+        keccak256(myBuffer)
+    );
+    const deadline = await governor.proposalSnapshot(proposalId);
+    if (deadline > 0) {
+        throw new Error("Duplicated proposals");
+    }
 
     await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
 })();
