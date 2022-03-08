@@ -22,7 +22,7 @@ Increasing decentralization is the primary motivation. In addition, to execute U
 
 # Specification
 
-- Prerequisites: Set the 'newAdmin' property of the Treasury contract to be the Timelock's address (0x107e3811900A93940cE8694fF9C6217Be900faAF).
+- Prerequisites: Set the 'newAdmin' property of the Treasury contract to be the Timelock's address (0xBBD3321f377742c4b3fe458b270c2F271d3294D8).
 - Call the function 'acceptAdmin()' of the Treasury contract to set its 'admin' property.
 
 # Test Cases
