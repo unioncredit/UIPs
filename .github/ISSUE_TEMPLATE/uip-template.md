@@ -29,8 +29,12 @@ All UIPs that introduce backwards incompatibilities must include a section descr
 ## Test Cases
 Test cases for an implementation are mandatory for UIPs that are affecting the core contracts. Other UIPs can choose to include links to test cases if applicable.
 
+Link to PR:
+
 ## Implementation
 The implementations must be completed before any UIP is given status "Final", but  need not be completed before the UIP is accepted. While there is merit to the approach of reaching consensus on the specification and rationale before writing code, the principle of "rough consensus and running code" is still useful when it comes to resolving many discussions of API details.
+
+Link to PR:
 
 ## Security Consideration
 All UIPs must contain a section that discusses the security implications/considerations relevant to the proposed change.
