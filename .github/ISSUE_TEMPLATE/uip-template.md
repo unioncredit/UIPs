@@ -36,5 +36,5 @@ The implementations must be completed before any UIP is given status "Final", bu
 
 Link to PR:
 
-## Security Consideration
+## Security Considerations
 All UIPs must contain a section that discusses the security implications/considerations relevant to the proposed change.
