@@ -6,6 +6,10 @@
     "repository": "https://github.com/unioncredit/union-v1-proposals.git",
     "author": "Max Weng <max.m.weng@gmail.com>",
     "license": "MIT",
+    "scripts": {
+        "test": "yarn hardhat test",
+        "submit": "yarn hardhat run"
+    },
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.10",
         "@nomiclabs/hardhat-waffle": "^2.0.2",
