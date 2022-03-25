@@ -40,7 +40,7 @@ Adding a treasury on L2 was considered, but there was no identifiable upside for
 No issues with backwards compatibility for this proposal
 
 ## Test Cases
-Tests and simulations can be found here: [Link to PR](https://github.com/unioncredit/union-v1-proposals/pull/3)
+Tests and simulations can be found here: [Link to PR](https://github.com/unioncredit/union-v1-proposals/pull/9)
 
 ## Implementation
 Call the function 'addSchedule(uint256,uint256,address,uint256)' of the Treasury contract ([0x6DBDe0E7e563E34A53B1130D6B779ec8eD34B4B9](https://etherscan.io/address/0x6DBDe0E7e563E34A53B1130D6B779ec8eD34B4B9#code)) with the following parameters:
@@ -48,7 +48,7 @@ Call the function 'addSchedule(uint256,uint256,address,uint256)' of the Treasury
 - drip rate: 1 UNION per block
 - target address: arbConnector ([0x307ED81138cA91637E432DbaBaC6E3A42699032a](https://etherscan.io/address/0x307ED81138cA91637E432DbaBaC6E3A42699032a))
 - total amount: 2.4M UNION
-- PR link: https://github.com/unioncredit/union-v1-proposals/pull/3
+- PR link: https://github.com/unioncredit/union-v1-proposals/pull/9
 
 ## Security Considerations
 - ArbConnector contract should work correctly to bridge any wrapped UNION on its balance to the Arbitrum comptroller.
