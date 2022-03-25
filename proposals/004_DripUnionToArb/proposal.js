@@ -59,10 +59,16 @@ Call the function 'addSchedule(uint256,uint256,address,uint256)' of the Treasury
     const TreasuryABI = require("../../abis/Treasury.json");
     const iface = new ethers.utils.Interface(TreasuryABI);
     const signedCalldatas = [];
-    for (i = 0; i < sigs.length; i++) {
-        console.log({sig: sigs[i], calldata: calldatas[i]});
-        signedCalldatas.push(iface.encodeFunctionData(sigs[i], calldatas[i] == "0x" ? [] : calldatas[i]));
-    }
+
+    signedCalldatas.push(
+        iface.encodeFunctionData(sigs[0], [
+            currBlock.number, // drip start block
+            parseUnits("1"), // drip rate, in wei
+            arbConnectorAddress, // target address
+            parseUnits("2400000") // 1 union per block for 1 year
+        ])
+    );
+
     console.log("Proposal contents");
     console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
 
