@@ -55,10 +55,17 @@ Call the function 'addSchedule(uint256,uint256,address,uint256)' of the Treasury
 - Wrapped UNION in ArbConnector can be withdrawn by the owner in case of emergency (by calling 'claimTokens(address recipient)')
 
 `;
+    const TreasuryABI = require("../../abis/Treasury.json");
+    const iface = new ethers.utils.Interface(TreasuryABI);
+    const signedCalldatas = [];
+    for (i = 0; i < sigs.length; i++) {
+        console.log({sig: sigs[i], calldata: calldatas[i]});
+        signedCalldatas.push(iface.encodeFunctionData(sigs[i], calldatas[i] == "0x" ? [] : calldatas[i]));
+    }
     console.log("Proposal contents");
-    console.log({targets, values, sigs, calldatas, msg});
+    console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
 
-    return {targets, values, sigs, calldatas, msg};
+    return {targets, values, sigs, calldatas, signedCalldatas, msg};
 }
 
 module.exports = {
