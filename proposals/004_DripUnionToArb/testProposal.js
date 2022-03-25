@@ -1,4 +1,4 @@
-const {ethers, deployments, getChainId} = require("hardhat");
+const {ethers, deployments, getChainId, network} = require("hardhat");
 const {expect} = require("chai");
 require("chai").should();
 
@@ -6,10 +6,9 @@ const {parseUnits} = ethers.utils;
 const {waitNBlocks, increaseTime} = require("../../utils");
 const {getProposalParams} = require("./proposal.js");
 
-const ethUser = "0x07f0eb0c571B6cFd90d17b5de2cc51112Fb95915"; //An address with eth
 const unionUser = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
 
-let defaultAccount, governorProxy, unionToken, treasury, arbConnectorAddress;
+let defaultAccount, governor, unionToken, treasury, arbConnectorAddress;
 
 const voteProposal = async governor => {
     let res;
@@ -50,29 +49,21 @@ describe("Drip UNION tokens to Arbitrum", async () => {
                 {
                     forking: {
                         jsonRpcUrl: "https://eth-mainnet.alchemyapi.io/v2/" + process.env.ALCHEMY_API_KEY,
-                        blockNumber: 14305300
+                        blockNumber: 14454755
                     }
                 }
             ]
         });
         [defaultAccount] = await ethers.getSigners();
-        ethSigner = await ethers.getSigner(ethUser);
         unionSigner = await ethers.getSigner(unionUser);
-        await network.provider.request({
-            method: "hardhat_impersonateAccount",
-            params: [ethSigner.address]
-        });
+
         await network.provider.request({
             method: "hardhat_impersonateAccount",
             params: [unionSigner.address]
         });
 
         // Send ETH to account
-        await ethSigner.sendTransaction({
-            to: defaultAccount.address,
-            value: parseUnits("10")
-        });
-        await ethSigner.sendTransaction({
+        await defaultAccount.sendTransaction({
             to: unionSigner.address,
             value: parseUnits("10")
         });
@@ -89,7 +80,7 @@ describe("Drip UNION tokens to Arbitrum", async () => {
         const UnionGovernorABI = require("../../abis/UnionGovernor.json");
         const UnionTokenABI = require("../../abis/UnionToken.json");
 
-        governorProxy = await ethers.getContractAt(UnionGovernorABI, governorAddress);
+        governor = await ethers.getContractAt(UnionGovernorABI, governorAddress);
         unionToken = await ethers.getContractAt(UnionTokenABI, unionTokenAddress);
         await unionToken.connect(unionSigner).delegate(defaultAccount.address);
 
@@ -107,17 +98,11 @@ describe("Drip UNION tokens to Arbitrum", async () => {
             arbConnectorAddress
         });
 
-        await governorProxy["propose(address[],uint256[],string[],bytes[],string)"](
-            targets,
-            values,
-            sigs,
-            calldatas,
-            msg
-        );
+        await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
     });
 
     it("Cast votes", async () => {
-        await voteProposal(governorProxy);
+        await voteProposal(governor);
     });
 
     it("Validate results", async () => {
