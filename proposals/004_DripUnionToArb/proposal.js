@@ -24,6 +24,8 @@ async function getProposalParams({treasuryAddress, arbConnectorAddress}) {
     ];
 
     const msg = `
+UIP-004: Drip UNION to Arbitrum comptroller
+
 ## Abstract
 In order to support Union on Arbitrum, UNION token will need to be distributed to participants. The L1 treasury will drip UNION token to the Arbitrum comptroller. An intermediary contract (ArbConnector) is added to connect L1 treasury to the Union Arbitrum comptroller.
 
