@@ -1,4 +1,9 @@
-# UIP Proposals for Union
+# Union Improvement Proposals
+
+For a complete, step-by-step view of the Union DAO governance process, (read the docs here.)[https://docs.union.finance/getting-started/dao-and-governance/governance-process]
+
+To view UIPs, click the *issues* tab above.
+
 
 ## Create a new proposal
 
