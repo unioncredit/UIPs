@@ -19,6 +19,7 @@ jobs:
 
             - name: Simulate on mainnet
               run: |
+                  yarn hardhat accounts --network kovan
                   yarn test --deploy-fixture proposals/**/testProposal.js
               env:
                   ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
