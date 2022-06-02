@@ -1,21 +1,48 @@
 const {ethers} = require("hardhat");
+const AssetManagerABI = require("../../abis/AssetManager.json");
+const arbProposeParams = require("../../utils/arbProposeParams.js");
 
 async function getProposalParams({assetManagerAddress, adapterAddress}) {
     if (!adapterAddress || !assetManagerAddress) {
         throw new Error("address error");
     }
 
-    const targets = [assetManagerAddress];
-    const values = ["0"];
-    const sigs = ["addAdapter(address)"];
-    const calldatas = [
-        ethers.utils.defaultAbiCoder.encode(
+    const assetManager = await ethers.getContractAt(AssetManagerABI, assetManagerAddress);
+    const actions = [
+        [
             ["address"],
-            [
-                adapterAddress // Aave V3 adapter address
-            ]
-        )
+            [adapterAddress],
+            assetManagerAddress,
+            "0",
+            assetManager.interface.encodeFunctionData("addAdapter(address)", [adapterAddress])
+        ]
     ];
+    //L1 address
+    const excessFeeRefundAddress = "0x7a0C61EdD8b5c0c5C1437AEb571d7DDbF8022Be4";
+    const callValueRefundAddress = "0x7a0C61EdD8b5c0c5C1437AEb571d7DDbF8022Be4";
+    let targets = [],
+        values = [],
+        signatures = [],
+        calldatas = [],
+        signedCalldatas = [];
+    for (let i = 0; i < actions.length; i++) {
+        const action = actions[i];
+        const {target, value, signature, calldata, signCalldata} = await arbProposeParams(
+            //types,params,target,value,calldata
+            action[0],
+            action[1],
+            action[2],
+            action[3],
+            action[4],
+            excessFeeRefundAddress,
+            callValueRefundAddress
+        );
+        targets.push(target);
+        values.push(value);
+        signatures.push(signature);
+        calldatas.push(calldata);
+        signedCalldatas.push(signCalldata);
+    }
 
     const msg = `
 UIP-005: Add Aave V3 Support on Arbitrum
@@ -57,20 +84,11 @@ Tests and simulations can be found here: [Link to PR](https://github.com/unioncr
 - Call AssetManager.addAdapter() to add AaveV3Adapter.
 
 `;
-    const AssetManagerABI = require("../../abis/AssetManager.json");
-    const iface = new ethers.utils.Interface(AssetManagerABI);
-    const signedCalldatas = [];
-
-    signedCalldatas.push(
-        iface.encodeFunctionData(sigs[0], [
-            adapterAddress // Aave V3 adapter address
-        ])
-    );
 
     console.log("Proposal contents");
     console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
 
-    return {targets, values, sigs, calldatas, signedCalldatas, msg};
+    return {targets, values, signatures, calldatas, signedCalldatas, msg};
 }
 
 module.exports = {
