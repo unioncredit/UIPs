@@ -22,7 +22,7 @@ async function getProposalParams({assetManagerAddress, adapterAddress}) {
     const callValueRefundAddress = "0x7a0C61EdD8b5c0c5C1437AEb571d7DDbF8022Be4";
     let targets = [],
         values = [],
-        signatures = [],
+        sigs = [],
         calldatas = [],
         signedCalldatas = [];
     for (let i = 0; i < actions.length; i++) {
@@ -39,7 +39,7 @@ async function getProposalParams({assetManagerAddress, adapterAddress}) {
         );
         targets.push(target);
         values.push(value);
-        signatures.push(signature);
+        sigs.push(signature);
         calldatas.push(calldata);
         signedCalldatas.push(signCalldata);
     }
@@ -88,7 +88,7 @@ Tests and simulations can be found here: [Link to PR](https://github.com/unioncr
     console.log("Proposal contents");
     console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
 
-    return {targets, values, signatures, calldatas, signedCalldatas, msg};
+    return {targets, values, sigs, calldatas, signedCalldatas, msg};
 }
 
 module.exports = {

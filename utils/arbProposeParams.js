@@ -37,17 +37,24 @@ async function main(types, params, destAddr, value, data, excessFeeRefundAddress
         inboxAddress = "0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f";
     }
 
-    const signer = new ethers.Wallet(process.env.PRIVATE_KEY);
-    const l1Signer = signer.connect(l1Provider);
-    const l2Signer = signer.connect(l2Provider);
-    const bridge = await Bridge.init(l1Signer, l2Signer);
-    const newGreetingBytes = encodeParameters(types, params);
-    const newGreetingBytesLength = hexDataLength(newGreetingBytes) + 4;
-    const [_submissionPriceWei] = await bridge.l2Bridge.getTxnSubmissionPrice(newGreetingBytesLength);
-    const submissionPriceWei = _submissionPriceWei.mul(5);
+    let gasPriceBid, submissionPriceWei;
+    if (chainId != 31337) {
+        const signer = new ethers.Wallet(process.env.PRIVATE_KEY);
+        const l1Signer = signer.connect(l1Provider);
+        const l2Signer = signer.connect(l2Provider);
+        const bridge = await Bridge.init(l1Signer, l2Signer);
+        const newGreetingBytes = encodeParameters(types, params);
+        const newGreetingBytesLength = hexDataLength(newGreetingBytes) + 4;
+        const [_submissionPriceWei] = await bridge.l2Bridge.getTxnSubmissionPrice(newGreetingBytesLength);
+        submissionPriceWei = _submissionPriceWei.mul(5);
 
-    let gasPriceBid = await bridge.l2Provider.getGasPrice();
-    gasPriceBid = gasPriceBid.mul(ethers.BigNumber.from("2"));
+        gasPriceBid = await bridge.l2Provider.getGasPrice();
+        gasPriceBid = gasPriceBid.mul(ethers.BigNumber.from("2"));
+    } else {
+        submissionPriceWei = ethers.BigNumber.from("100000000000000");
+        gasPriceBid = ethers.BigNumber.from("5000000000");
+    }
+
     const callValue = submissionPriceWei.add(gasPriceBid.mul(maxGas));
     const target = inboxAddress;
     const signature = "createRetryableTicket(address,uint256,uint256,address,address,uint256,uint256,bytes)";

@@ -38,7 +38,9 @@ const voteProposal = async governor => {
 
     console.log(`Executing proposal Id: ${proposalId}`);
 
-    await governor["execute(uint256)"](proposalId);
+    await governor["execute(uint256)"](proposalId, {
+        value: "1000000000000000000"
+    });
 };
 
 describe("Add new adapter to Arbitrum", async () => {
