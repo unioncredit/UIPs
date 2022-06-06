@@ -13,7 +13,7 @@ Object.keys(addresses).map(networkID => {
             addresses[networkID] = Object.assign(addresses[networkID], {
                 unionTokenAddress: "0x5Dfe42eEA70a3e6f93EE54eD9C321aF07A85535C", //Address on Mainnet
                 assetManagerAddress: "0x7Aecd107Cb022e1DFd42cC43E9BA94C38BC83275", //Address on Arbitrum
-                adapterAddress: "" //Address on Arbitrum
+                adapterAddress: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6" //Address on Arbitrum
             });
             break;
     }
