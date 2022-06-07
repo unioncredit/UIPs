@@ -62,27 +62,30 @@ Create an AssetManager Adapter that works with Aave V3 to deposit a portion of u
 - claimRewards() - get the rewarded Aave token.
 
 ### Parameters
-- Set PureTokenAdapter floor of 25,000 DAI
-- Set Aave V1 adapter to floor of 25,000 DAI
-- Set Aave V1 adapter to ceiling of 500,000 DAI
-- Set PureTokenAdapter to ceiling of 500,000 DAI
+- Set AaveV3Adapter floor to 10,000 DAI
+- Set AaveV3Adapter ceiling to 50,000 DAI
 
 ## Defining Success
 Be able to deposit to / withdraw from Aave, and be able to claim rewards token from Aave on Arbitrum.
 
 ## Backwards Compatibility
-No issues with backwards compatibility for this proposal
+No issues with backward compatibility for this proposal.
 
 ## Test Cases
 Tests and simulations can be found here: [Link to PR](https://github.com/unioncredit/union-v1-contracts/pull/106)
 
 ## Implementation
-- Create and deploy AaveV3Adapter.
-- Set AaveV3Adapter floor to 25,000 DAI
-- Set AaveV3Adapter ceiling to 500,000 DAI
-- Set AaveV3Adapter mapTokenToAToken
-- Call AssetManager.addAdapter() to add AaveV3Adapter.
 
+### Before creating the proposal:
+
+- Create and deploy AaveV3Adapter on Arbitrum.
+- Set AaveV3Adapter floor to 10,000 DAI
+- Set AaveV3Adapter ceiling to 50,000 DAI
+- Set AaveV3Adapter mapTokenToAToken
+
+### In the proposal:
+
+- Call AssetManager.addAdapter() to add AaveV3Adapter.
 `;
 
     console.log("Proposal contents");
