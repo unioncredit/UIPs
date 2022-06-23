@@ -9,7 +9,7 @@ describe("Test aave3 adapter on forking arbitrum", () => {
     const {TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY} = process.env;
     const daiAddress = "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1";
     const account = "0x4a2328a2c7ffc1ea1a6ba4623dfc28029aa2b3ce"; //An address with eth and dai on the arbitrum is used for testing
-    const admin = "0xcbd1c32a1b3961cc43868b8bae431ab0da65beeb";
+    const assetManager = "0x7Aecd107Cb022e1DFd42cC43E9BA94C38BC83275"; // on the arbitrum
     const adatterAddress = "0x393d7299c2caA940b777b014a094C3B2ea45ee2B";
     let oldProvider;
     const deployAndInitContracts = async () => {
@@ -42,7 +42,7 @@ describe("Test aave3 adapter on forking arbitrum", () => {
         ethers.provider = provider;
 
         signer = await ethers.provider.getSigner(account);
-        adminSigner = await ethers.provider.getSigner(admin);
+        assetManagerSigner = await ethers.provider.getSigner(assetManager);
         dai = await ethers.getContractAt("FaucetERC20", daiAddress);
 
         aAdapter = await ethers.getContractAt("AaveV3Adapter", adatterAddress);
@@ -70,14 +70,14 @@ describe("Test aave3 adapter on forking arbitrum", () => {
         bal.should.be.above(depositAmount);
 
         console.log("withdrawAll");
-        await aAdapter.connect(adminSigner).withdrawAll(daiAddress, account);
+        await aAdapter.connect(assetManagerSigner).withdrawAll(daiAddress, account);
         bal = await aAdapter.getSupplyView(daiAddress);
         console.log("after withdraw all:", bal.toString());
         bal.should.eq("0");
     });
 
     it("claim rewards", async () => {
-        await aAdapter.connect(adminSigner).claimRewards(daiAddress);
+        await aAdapter.connect(assetManagerSigner).claimRewards(daiAddress);
     });
 
     it("delete fork", async function () {
