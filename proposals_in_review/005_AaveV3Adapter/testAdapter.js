@@ -43,9 +43,12 @@ describe("Test aave3 adapter on forking arbitrum", () => {
 
         signer = await ethers.provider.getSigner(account);
         assetManagerSigner = await ethers.provider.getSigner(assetManager);
-        dai = await ethers.getContractAt("FaucetERC20", daiAddress);
 
-        aAdapter = await ethers.getContractAt("AaveV3Adapter", adatterAddress);
+        const AaveV3AdapterABI = require("../../abis/AaveV3Adapter.json");
+        const FaucetERC20ABI = require("../../abis/FaucetERC20.json");
+
+        dai = await ethers.getContractAt(FaucetERC20ABI, daiAddress);
+        aAdapter = await ethers.getContractAt(AaveV3AdapterABI, adatterAddress);
     };
 
     before(deployAndInitContracts);
