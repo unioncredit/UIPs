@@ -1,8 +1,8 @@
-const {ethers} = require("hardhat");
+const {ethers, getChainId} = require("hardhat");
 const {parseEther} = require("ethers").utils;
 require("chai").should();
 const axios = require("axios");
-const {tenderlyWaitNBlocks} = require("../../utils");
+const {tenderlyWaitNBlocks} = require("../../../utils");
 
 describe("Test aave3 adapter on forking arbitrum", () => {
     const startBlock = 15359634;
@@ -10,7 +10,7 @@ describe("Test aave3 adapter on forking arbitrum", () => {
     const daiAddress = "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1";
     const account = "0x4a2328a2c7ffc1ea1a6ba4623dfc28029aa2b3ce"; //An address with eth and dai on the arbitrum is used for testing
     const assetManager = "0x7Aecd107Cb022e1DFd42cC43E9BA94C38BC83275"; // on the arbitrum
-    const adatterAddress = "0x393d7299c2caA940b777b014a094C3B2ea45ee2B";
+    const adapterAddress = "0x393d7299c2caA940b777b014a094C3B2ea45ee2B";
     let oldProvider;
     const deployAndInitContracts = async () => {
         axios.create({
@@ -44,11 +44,11 @@ describe("Test aave3 adapter on forking arbitrum", () => {
         signer = await ethers.provider.getSigner(account);
         assetManagerSigner = await ethers.provider.getSigner(assetManager);
 
-        const AaveV3AdapterABI = require("../../abis/AaveV3Adapter.json");
-        const FaucetERC20ABI = require("../../abis/FaucetERC20.json");
+        const AaveV3AdapterABI = require("../../../abis/AaveV3Adapter.json");
+        const FaucetERC20ABI = require("../../../abis/FaucetERC20.json");
 
         dai = await ethers.getContractAt(FaucetERC20ABI, daiAddress);
-        aAdapter = await ethers.getContractAt(AaveV3AdapterABI, adatterAddress);
+        aAdapter = await ethers.getContractAt(AaveV3AdapterABI, adapterAddress);
     };
 
     before(deployAndInitContracts);

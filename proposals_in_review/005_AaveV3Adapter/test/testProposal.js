@@ -3,8 +3,8 @@ const {expect} = require("chai");
 require("chai").should();
 
 const {parseUnits} = ethers.utils;
-const {waitNBlocks, increaseTime} = require("../../utils");
-const {getProposalParams} = require("./proposal.js");
+const {waitNBlocks, increaseTime} = require("../../../utils");
+const {getProposalParams} = require("../proposal.js");
 
 const unionUser = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
 
@@ -70,15 +70,15 @@ describe("Add new adapter to Arbitrum", async () => {
             value: parseUnits("10")
         });
 
-        const addresses = require(`./addresses.js`)[await getChainId()];
+        const addresses = require(`../addresses.js`)[await getChainId()];
         governorAddress = addresses.governorAddress;
         assetManagerAddress = addresses.assetManagerAddress;
         adapterAddress = addresses.adapterAddress;
         unionTokenAddress = addresses.unionTokenAddress;
         console.log({governorAddress, assetManagerAddress, adapterAddress, unionTokenAddress});
 
-        const UnionGovernorABI = require("../../abis/UnionGovernor.json");
-        const UnionTokenABI = require("../../abis/UnionToken.json");
+        const UnionGovernorABI = require("../../../abis/UnionGovernor.json");
+        const UnionTokenABI = require("../../../abis/UnionToken.json");
 
         governor = await ethers.getContractAt(UnionGovernorABI, governorAddress);
         unionToken = await ethers.getContractAt(UnionTokenABI, unionTokenAddress);
