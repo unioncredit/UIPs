@@ -5,12 +5,16 @@ const axios = require("axios");
 const {tenderlyWaitNBlocks} = require("../../../utils");
 
 describe("Test aave3 adapter on forking arbitrum", () => {
-    const startBlock = 15359634;
+    const startBlock = 15405500;
     const {TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY} = process.env;
     const daiAddress = "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1";
     const account = "0x4a2328a2c7ffc1ea1a6ba4623dfc28029aa2b3ce"; //An address with eth and dai on the arbitrum is used for testing
     const assetManager = "0x7Aecd107Cb022e1DFd42cC43E9BA94C38BC83275"; // on the arbitrum
     const adapterAddress = "0x393d7299c2caA940b777b014a094C3B2ea45ee2B";
+    const guardian = "0x123e6014ae4e4409213f412052072b8A20c320f8";
+    const admin = "0xd3f60bE7B55EFEb9Bc5df4606C103814C4F4ead7";
+    const timelock = "0xCce4321F377742C4B3FE458B270c2f271d32A5e9";
+
     let oldProvider;
     const deployAndInitContracts = async () => {
         axios.create({
@@ -53,15 +57,26 @@ describe("Test aave3 adapter on forking arbitrum", () => {
 
     before(deployAndInitContracts);
 
+    it("multisig guardian is the pause guardian", async () => {
+        (await aAdapter.pauseGuardian()).should.be.eq(guardian);
+    });
+
+    it("multisig admin is the admin", async () => {
+        (await aAdapter.isAdmin(admin)).should.be.eq(true);
+    });
+
+    it("timelock is the admin", async () => {
+        (await aAdapter.isAdmin(timelock)).should.be.eq(true);
+    });
+
     it("deposit to aave and generate interest", async () => {
         const depositAmount = parseEther("0.1");
         console.log("transfer dai");
         await dai.connect(signer).transfer(aAdapter.address, depositAmount);
         console.log("deposit");
         await aAdapter.connect(signer).deposit(daiAddress);
-        console.log("getSupplyView");
         const res = await aAdapter.getRate(daiAddress);
-        console.log(res);
+        console.log({rate: ethers.utils.formatEther(res)});
         let bal = await aAdapter.getSupplyView(daiAddress);
         console.log("start balance:", bal.toString());
         bal.should.be.above(depositAmount);
