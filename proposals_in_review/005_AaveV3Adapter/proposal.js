@@ -78,7 +78,7 @@ Tests and simulations can be found here: [Link to PR](https://github.com/unioncr
 
 ### Before creating the proposal:
 
-- Create and deploy AaveV3Adapter on Arbitrum.
+- Create and deploy AaveV3Adapter on Arbitrum
 - Set AaveV3Adapter floor to 10,000 DAI
 - Set AaveV3Adapter ceiling to 50,000 DAI
 - Set AaveV3Adapter mapTokenToAToken
