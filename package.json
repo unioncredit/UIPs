@@ -9,7 +9,7 @@
     "scripts": {
         "test": "yarn hardhat test",
         "submit": "yarn hardhat run",
-        "sim:in_review": "yarn hardhat test --deploy-fixture proposals_in_review/**/test/*"
+        "sim:in_review": "test -d proposals_in_review && yarn hardhat test --deploy-fixture proposals_in_review/**/test/*"
     },
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.10",
