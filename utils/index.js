@@ -8,6 +8,10 @@ const waitNBlocks = async n => {
     );
 };
 
+const tenderlyWaitNBlocks = async n => {
+    await ethers.provider.send("evm_increaseBlocks", [ethers.utils.hexValue(n)]);
+};
+
 const increaseTime = async seconds => {
     await ethers.provider.send("evm_increaseTime", [seconds]);
     await ethers.provider.send("evm_mine");
@@ -29,6 +33,7 @@ function etherUnsigned(num) {
 
 module.exports = {
     waitNBlocks,
+    tenderlyWaitNBlocks,
     increaseTime,
     encodeParameters,
     etherMantissa,
