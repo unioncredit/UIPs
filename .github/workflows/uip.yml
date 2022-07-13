@@ -18,7 +18,7 @@ jobs:
               run: yarn
 
             - name: Simulate on mainnet
-              run: yarn sim:in_review
+              run: yarn sim:latest
               env:
                   ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
                   INFURA_ID: ${{ secrets.INFURA_ID }}
