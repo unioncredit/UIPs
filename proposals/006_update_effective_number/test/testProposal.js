@@ -5,6 +5,7 @@ require("chai").should();
 const {parseUnits} = ethers.utils;
 const {waitNBlocks, increaseTime} = require("../../../utils");
 const {getProposalParams} = require("../proposal.js");
+const sumOfTrustABI = require("../../../abis/SumOfTrust.json");
 
 const unionUser = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
 
@@ -43,7 +44,7 @@ const voteProposal = async governor => {
     });
 };
 
-describe("Update effectiveNumber on Mainnet", async () => {
+describe("Update effectiveNumber on Mainnet & Arbitrum", async () => {
     before(async () => {
         await network.provider.request({
             method: "hardhat_reset",
@@ -51,7 +52,7 @@ describe("Update effectiveNumber on Mainnet", async () => {
                 {
                     forking: {
                         jsonRpcUrl: "https://eth-mainnet.alchemyapi.io/v2/" + process.env.ALCHEMY_API_KEY,
-                        blockNumber: 14889720
+                        blockNumber: 15133722
                     }
                 }
             ]
@@ -96,5 +97,11 @@ describe("Update effectiveNumber on Mainnet", async () => {
 
     it("Cast votes", async () => {
         await voteProposal(governor);
+    });
+
+    it("Validate results", async () => {
+        // can only verify results on Mainnet
+        const sumOfTrust = await ethers.getContractAt(sumOfTrustABI, sumOfTrustAddr);
+        (await sumOfTrust.effectiveNumber()).should.eq(1);
     });
 });
