@@ -4,8 +4,8 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
     const {deployer} = await getNamedAccounts();
     const {getProposalParams} = require(`./proposal.js`);
     const chainId = await getChainId();
-    const {governorAddress, assetManagerAddress, adapterAddress} = require(`./addresses.js`)[chainId];
-    console.log({governorAddress, assetManagerAddress, adapterAddress});
+    const {governorAddress, sumOfTrustAddr, sumOfTrustAddrL2} = require(`./addresses.js`)[chainId];
+    console.log({governorAddress, sumOfTrustAddr, sumOfTrustAddrL2});
 
     const UnionGovernorABI = require("../../abis/UnionGovernor.json");
     const governor = await ethers.getContractAt(UnionGovernorABI, governorAddress);
@@ -22,8 +22,8 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
     }
 
     const {targets, values, sigs, calldatas, signedCalldatas, msg} = await getProposalParams({
-        assetManagerAddress,
-        adapterAddress
+        sumOfTrustAddr,
+        sumOfTrustAddrL2
     });
 
     const keccak256 = ethers.utils.keccak256;

@@ -2,8 +2,8 @@ const {ethers} = require("hardhat");
 const sumOfTrustABI = require("../../abis/SumOfTrust.json");
 const arbProposeParams = require("../../utils/arbProposeParams.js");
 
-async function getProposalParams({sumOfTrustAddr}) {
-    if (!sumOfTrustAddr) {
+async function getProposalParams({sumOfTrustAddr, sumOfTrustAddrL2}) {
+    if (!sumOfTrustAddr || !sumOfTrustAddrL2) {
         throw new Error("address error");
     }
 
@@ -12,7 +12,7 @@ async function getProposalParams({sumOfTrustAddr}) {
         [
             ["uint256"],
             ["1"],
-            sumOfTrustAddr,
+            sumOfTrustAddrL2,
             "0",
             sumOfTrust.interface.encodeFunctionData("setEffectNumber(uint256)", ["1"])
         ]
@@ -20,11 +20,11 @@ async function getProposalParams({sumOfTrustAddr}) {
     //L1 address
     const excessFeeRefundAddress = "0x7a0C61EdD8b5c0c5C1437AEb571d7DDbF8022Be4";
     const callValueRefundAddress = "0x7a0C61EdD8b5c0c5C1437AEb571d7DDbF8022Be4";
-    let targets = [],
-        values = [],
-        sigs = [],
-        calldatas = [],
-        signedCalldatas = [];
+    let targets = [sumOfTrustAddr],
+        values = ["0"],
+        sigs = ["setEffectNumber(uint256)"],
+        calldatas = [ethers.utils.defaultAbiCoder.encode(["uint256"], ["1"])],
+        signedCalldatas = [sumOfTrust.interface.encodeFunctionData("setEffectNumber(uint256)", ["1"])];
     for (let i = 0; i < actions.length; i++) {
         const action = actions[i];
         const {target, value, signature, calldata, signCalldata} = await arbProposeParams(

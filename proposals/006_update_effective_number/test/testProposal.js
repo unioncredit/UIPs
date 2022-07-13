@@ -73,8 +73,9 @@ describe("Update effectiveNumber on Mainnet", async () => {
         const addresses = require(`../addresses.js`)[await getChainId()];
         governorAddress = addresses.governorAddress;
         sumOfTrustAddr = addresses.sumOfTrustAddr;
+        sumOfTrustAddrL2 = addresses.sumOfTrustAddrL2;
         unionTokenAddress = addresses.unionTokenAddress;
-        console.log({governorAddress, sumOfTrustAddr, unionTokenAddress});
+        console.log({governorAddress, sumOfTrustAddr, sumOfTrustAddrL2, unionTokenAddress});
 
         const UnionGovernorABI = require("../../../abis/UnionGovernor.json");
         const UnionTokenABI = require("../../../abis/UnionToken.json");
@@ -86,7 +87,8 @@ describe("Update effectiveNumber on Mainnet", async () => {
 
     it("Submit proposal", async () => {
         const {targets, values, sigs, calldatas, msg} = await getProposalParams({
-            sumOfTrustAddr
+            sumOfTrustAddr,
+            sumOfTrustAddrL2
         });
 
         await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
