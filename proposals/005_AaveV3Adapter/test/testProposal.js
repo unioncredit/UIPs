@@ -85,13 +85,13 @@ describe("Add new adapter to Arbitrum", async () => {
         await unionToken.connect(unionSigner).delegate(defaultAccount.address);
     });
 
-    it.only("Submit proposal", async () => {
+    it("Submit proposal", async () => {
         const {targets, values, sigs, calldatas, msg} = await getProposalParams({
             assetManagerAddress,
             adapterAddress
         });
 
-        // await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
+        await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
     });
 
     it("Cast votes", async () => {
