@@ -9,7 +9,7 @@
     "scripts": {
         "test": "yarn hardhat test",
         "submit": "yarn hardhat run",
-        "sim:latest": "p=$(ls -t ./proposals | head -n 1) && yarn hardhat test --deploy-fixture proposals/$p/test/*"
+        "sim:latest": "p=$(ls ./proposals | tail -n 1) && yarn hardhat test --deploy-fixture proposals/$p/test/*"
     },
     "devDependencies": {
         "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.10",
