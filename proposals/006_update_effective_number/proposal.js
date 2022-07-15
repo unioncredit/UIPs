@@ -47,34 +47,34 @@ async function getProposalParams({sumOfTrustAddr, sumOfTrustAddrL2}) {
     const msg = `
 UIP-006: Dropping the Effective Number from 3 to 1
 
-## Abstract
+# Abstract
 
-Right now, the number of vouches required to become a Union member is 3. This requirement is called the “effective number.” This proposal will change the effective number from 3 to 1.
+Right now, the number of vouches required to become a Union member is 3. This requirement is called the “effective number.” This proposal will change the effective number from 3 to 1. It's important for protocol health for the global average number of edges per node to be >1. With this proposal we plan to drop the hard requirement to 1 and monitor where the actual averages end up. 
 
-## Motivation
+# Motivation
 
-The goal of changing the effective number is to facilitate user interaction with the protocol. Dropping the effective number addresses three aspects of user interaction: onboarding, follow-through.
-Streamline onboarding: Dropping the effective number to 1 allows for current members to onboard their community members quickly, and promotes local network growth.
-Increase membership follow-through: A current issue with the effective number being 3 is that if someone is missing one or two of the vouches required to become a member, they are less likely to follow through on membership completion, ironically leading to fewer people to vouch. Reducing the amount of vouches required to become a member will result in a higher rate of membership completion.
-If a user has one vouch, all they would need to do is stake and burn the token to become a Union member, rather than relying on vouches from two more external actors.
+The goal of changing the effective number is to facilitate user interaction with the protocol. Dropping the effective number affects two aspects of user interaction: onboarding and follow-through.
+- Streamline onboarding: Dropping the effective number to 1 allows for current members to onboard their community members quickly, and promotes local network growth.
+- Increase membership follow-through: A current issue with the effective number being 3 is that if someone is missing one or two of the vouches required to become a member, they are less likely to follow through on membership completion. This problem also gates people from vouching for others. Reducing the amount of vouches required to become a member will result in a higher rate of membership completion.
 
-## Specification
+# Specification
 
-Change the effectiveNumber in SumOfTrust from 3 to 1.
+Change the 'effectiveNumber' in [SumOfTrust](https://github.com/unioncredit/union-v1-contracts/blob/master/contracts/user/SumOfTrust.sol) from '3' to '1'.
 
-## Backwards Compatibility
+# Backwards Compatibility
 
 Existing Union members with 3 or more vouches should still work as previously.
 
-## Test Cases
+# Test Cases
 
 Tests and simulations can be found here: [Link to PR](https://github.com/unioncredit/UIPs/pull/12)
 
-## Implementation
+# Implementation
 
-Set the effectiveNumber of SumOfTrust  to 1 by calling SumOfTrust.setEffectiveNumber(1)
+Set the 'effectiveNumber' of [SumOfTrust](https://github.com/unioncredit/union-v1-contracts/blob/master/contracts/user/SumOfTrust.sol)  to '1' by calling 'SumOfTrust.setEffectiveNumber(1)'
+Link to PR: https://github.com/unioncredit/UIPs/pull/12
 
-Security Considerations
+# Security Considerations
 
 One of the implications is that if only one member is vouching for you, and someone else is borrowing against that person’s vouch, your total amount of available credit could go down to 0. The possibility of a member’s available credit being dependent on only one credit provider should encourage the user to onboard more members as underwriters, and incentivize users to not rely on a sole credit provider.
 `;
