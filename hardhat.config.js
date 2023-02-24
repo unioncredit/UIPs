@@ -31,7 +31,16 @@ module.exports = {
                   }
         },
         mainnet: {
-            url: "https://mainnet.infura.io/v3/" + process.env.INFURA_ID,
+            url: "https://eth-mainnet.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
+            accounts: process.env.PRIVATE_KEY
+                ? [process.env.PRIVATE_KEY]
+                : {
+                      mnemonic: process.env.MNEMONIC ? process.env.MNEMONIC : process.env.MNEMONIC_TEST
+                  }
+        },
+        goerli: {
+            url: "https://eth-goerli.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
+            chainId: 5,
             accounts: process.env.PRIVATE_KEY
                 ? [process.env.PRIVATE_KEY]
                 : {
