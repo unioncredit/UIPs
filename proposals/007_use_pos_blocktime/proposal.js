@@ -40,8 +40,8 @@ async function getProposalParams(addresses) {
 
     // Update Arbitrum
     const actions = [
-        [["uint256"], [newInterestRate], interestRateAddr, "0", setInterestRateCalldata],
-        [["uint256"], [newOverdueBlocks], uDaiAddr, "0", setOverdueBlocksCalldata]
+        [["uint256"], [newInterestRate], interestRateAddrL2, "0", setInterestRateCalldata],
+        [["uint256"], [newOverdueBlocks], uDaiAddrL2, "0", setOverdueBlocksCalldata]
     ];
     for (let i = 0; i < actions.length; i++) {
         const action = actions[i];
