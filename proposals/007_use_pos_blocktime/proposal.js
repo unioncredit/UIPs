@@ -62,7 +62,7 @@ async function getProposalParams(addresses) {
     }
 
     const msg = `
-UIP-007: Update to adapt to PoS blocktime
+UIP-007: Adapt to PoS blocktime
 
 # Abstract
 
@@ -79,6 +79,8 @@ Now that PoS has passed and enough time passed to get an accurate Blocks per yea
 - To calculate the number of new overdue blocks, we use the PoS block time of approximately 12 seconds and a 30-day overdue period. Therefore, the calculation would be (3600 * 24 * 30) / 12, which results in 216,000
 
 # Test Cases
+
+Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIPs/pull/15)
 
 # Implementation
 
