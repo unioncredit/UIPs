@@ -9,7 +9,9 @@ Object.keys(addresses).map(networkID => {
                 uDaiAddr: "0x954F20DF58347b71bbC10c94827bE9EbC8706887",
                 uDaiAddrL2: "0x954F20DF58347b71bbC10c94827bE9EbC8706887", //Address on Arbitrum
                 interestRateAddr: "0xfDd998ce04AB8f48B473cE4C9af1C2F8F8E264Eb",
-                interestRateAddrL2: "0x051e2514E3fE8da88CaA2951442a21042BCe99Ea" //Address on Arbitrum
+                interestRateAddrL2: "0x051e2514E3fE8da88CaA2951442a21042BCe99Ea", //Address on Arbitrum
+                timelockAddr: "0xBBD3321f377742c4b3fe458b270c2F271d3294D8",
+                timelockAddrL2: "0xCce4321F377742C4B3FE458B270c2f271d32A5e9"
             });
             break;
         case "1":
