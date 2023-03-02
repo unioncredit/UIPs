@@ -84,8 +84,13 @@ Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIP
 
 # Implementation
 
-- Call FixedInterestRateModel.setInterestRate("38051750380") to update the interest rate per block
-- Call UToken.setOverdueBlocks("216000") to change the loan overdue period
+For Mainnet:
+- Call [FixedInterestRateModel](https://etherscan.io/address/0xfDd998ce04AB8f48B473cE4C9af1C2F8F8E264Eb).setInterestRate("38051750380") to update the interest rate per block
+- Call [UToken](https://etherscan.io/address/0x954F20DF58347b71bbC10c94827bE9EbC8706887).setOverdueBlocks("216000") to change the loan overdue period
+
+For Arbitrum
+- Call [FixedInterestRateModel](https://arbiscan.io/address/0x051e2514E3fE8da88CaA2951442a21042BCe99Ea).setInterestRate("38051750380") to update the interest rate per block
+- Call [UToken](https://arbiscan.io/address/0x954F20DF58347b71bbC10c94827bE9EbC8706887).setOverdueBlocks("216000") to change the loan overdue period
 
 `;
 
