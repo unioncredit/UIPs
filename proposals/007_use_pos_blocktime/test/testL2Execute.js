@@ -13,7 +13,7 @@ describe("Update overdueBlocks, and interestRate on Arbitrum", async () => {
                 {
                     forking: {
                         jsonRpcUrl: "https://arb-mainnet.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
-                        blockNumber: 16695750
+                        blockNumber: 65887100
                     }
                 }
             ]
