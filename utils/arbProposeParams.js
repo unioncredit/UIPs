@@ -6,7 +6,6 @@ require("dotenv").config();
 
 const networks = {
     1: "mainnet",
-    4: "rinkeby",
     31337: "hardhat"
 };
 
@@ -25,6 +24,9 @@ async function main(types, params, destAddr, value, data, excessFeeRefundAddress
     if (chainId == 1) {
         l1Provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_ID);
         l2Provider = new ethers.providers.JsonRpcProvider("https://arb1.arbitrum.io/rpc");
+        inboxAddress = "0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f";
+    } else if (chainId == 31337) {
+        // for simulations
         inboxAddress = "0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f";
     }
 
