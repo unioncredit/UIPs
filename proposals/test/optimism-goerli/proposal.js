@@ -1,22 +1,22 @@
 const {ethers} = require("hardhat");
 const {Interface} = require("ethers/lib/utils");
 const opOwnerABI = require("../../../abis/OpOwner.json");
-const uTokenABI = require("../../../abis/uToken.json");
+const fixedRateInterestModelABI = require("../../../abis/FixedRateInterestMode.json");
 
 const optimismBridgeAddress = "0x5086d1eEF304eb5284A0f6720f79403b4e9bE294";
 //test call l2 utoken setMaxBorrow from l1
-async function getProposalParams({opOwnerAddress, uTokenAddressL2}) {
-    if (!uTokenAddressL2 || !opOwnerAddress) {
+async function getProposalParams({opOwnerAddress, fixedRateInterestModelL2}) {
+    if (!fixedRateInterestModelL2 || !opOwnerAddress) {
         throw new Error("address error");
     }
 
-    const uToken = await ethers.getContractAt(uTokenABI, uTokenAddressL2);
+    const fixedRateInterestModel = await ethers.getContractAt(fixedRateInterestModelABI, fixedRateInterestModelL2);
     const opOwner = await ethers.getContractAt(opOwnerABI, opOwnerAddress);
     const iface = new Interface([`function sendMessage(address,bytes,uint32) external`]);
 
-    const data = uToken.interface.encodeFunctionData("setMaxBorrow(uint256)", ["99900000000000000000000"]);
+    const data = fixedRateInterestModel.interface.encodeFunctionData("setInterestRate(uint256)", ["6341958397"]);
     const executeData = opOwner.interface.encodeFunctionData("execute(address,uint256,bytes)", [
-        uTokenAddressL2,
+        fixedRateInterestModelL2,
         0,
         data
     ]);
@@ -32,7 +32,7 @@ async function getProposalParams({opOwnerAddress, uTokenAddressL2}) {
         iface.encodeFunctionData("sendMessage(address,bytes,uint32)", [opOwnerAddress, executeData, gasLimit])
     ];
     const msg = `
-Test: set utoken MaxBorrow to 99900
+    Change the rate to 6341958397, which is 10% APR (6341958397 x 43200 (blocks per day) x 365)
 `;
 
     console.log("Proposal contents");
