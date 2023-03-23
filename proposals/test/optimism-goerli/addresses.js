@@ -5,15 +5,15 @@ Object.keys(addresses).map(networkID => {
         case "5":
             addresses[networkID] = Object.assign(addresses[networkID], {
                 unionTokenAddress: "0x23B0483E07196c425d771240E81A9c2f1E113D3A", //Address on goerli
-                uTokenAddressL2: "0x792ACBbF38Df3A60ABa14851fC518620C7AE386c", //Address on optimism-goerli
-                opOwnerAddress: "0x5eFD403912661A984B810814Ba366Aa633777353" //Address on optimism-goerli
+                fixedRateInterestModelL2: "0x855d222553c0fF835e1C319C19A37f973101ce83", //Address on optimism-goerli
+                opOwnerAddress: "0x1730714dabac5F351A234de4307d868767A04295" //Address on optimism-goerli
             });
             break;
         case "420":
             addresses[networkID] = Object.assign(addresses[networkID], {
                 unionTokenAddress: "0x23B0483E07196c425d771240E81A9c2f1E113D3A", //Address on goerli
-                uTokenAddressL2: "0x792ACBbF38Df3A60ABa14851fC518620C7AE386c", //Address on optimism-goerli
-                opOwnerAddress: "0x5eFD403912661A984B810814Ba366Aa633777353" //Address on optimism-goerli
+                fixedRateInterestModelL2: "0x855d222553c0fF835e1C319C19A37f973101ce83", //Address on optimism-goerli
+                opOwnerAddress: "0x1730714dabac5F351A234de4307d868767A04295" //Address on optimism-goerli
             });
             break;
     }
