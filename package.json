@@ -12,14 +12,14 @@
         "sim:latest": "p=$(ls ./proposals | tail -n 1) && yarn hardhat test --deploy-fixture proposals/$p/test/*"
     },
     "devDependencies": {
+        "@arbitrum/sdk": "^3.1.1",
         "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.10",
         "@nomiclabs/hardhat-waffle": "^2.0.2",
-        "arb-ts": "^1.0.2",
         "chai": "^4.3.6",
         "dotenv": "^16.0.0",
         "ethereum-waffle": "^3.4.0",
         "ethers": "^5.5.4",
-        "hardhat": "^2.9.0",
+        "hardhat": "^2.12.0",
         "hardhat-deploy": "^0.10.5",
         "prettier": "^2.5.1",
         "prettier-plugin-solidity": "^1.0.0-beta.19"

@@ -4,11 +4,12 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
     const {deployer} = await getNamedAccounts();
     const {getProposalParams} = require(`./proposal.js`);
     const chainId = await getChainId();
-    const {governorAddress, fixedRateInterestModelL2, opOwnerAddress} = require(`./addresses.js`)[chainId];
-    console.log({governorAddress, fixedRateInterestModelL2, opOwnerAddress});
+    console.log({chainId});
+    const addresses = require(`./addresses.js`)[await getChainId()];
+    console.log({addresses});
 
-    const UnionGovernorABI = require("../../../abis/UnionGovernor.json");
-    const governor = await ethers.getContractAt(UnionGovernorABI, governorAddress);
+    const UnionGovernorABI = require("../../abis/UnionGovernor.json");
+    const governor = await ethers.getContractAt(UnionGovernorABI, addresses.governorAddress);
     console.log({governor: governor.address});
 
     const latestProposalId = await governor.latestProposalIds(deployer);
@@ -21,12 +22,8 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
         }
     }
 
-    const {targets, values, sigs, calldatas, signedCalldatas, msg} = await getProposalParams({
-        opOwnerAddress,
-        fixedRateInterestModelL2
-    });
+    const {targets, values, sigs, calldatas, signedCalldatas, msg} = await getProposalParams(addresses);
 
-    const keccak256 = ethers.utils.keccak256;
     let myBuffer = [];
     let buffer = new Buffer.from(msg);
 
@@ -38,7 +35,7 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
         targets,
         values,
         signedCalldatas,
-        keccak256(myBuffer)
+        ethers.utils.keccak256(myBuffer)
     );
     const deadline = await governor.proposalSnapshot(proposalId);
     if (deadline > 0) {

@@ -1,16 +1,13 @@
 const hre = require("hardhat");
 const {ethers, getChainId} = hre;
-const {Bridge} = require("arb-ts");
+const {L1ToL2MessageGasEstimator} = require("@arbitrum/sdk/dist/lib/message/L1ToL2MessageGasEstimator");
 const {hexDataLength} = require("@ethersproject/bytes");
 require("dotenv").config();
 
 const networks = {
     1: "mainnet",
-    4: "rinkeby",
     31337: "hardhat"
 };
-
-const maxGas = 275000;
 
 const encodeParameters = (types, values) => {
     const abi = new ethers.utils.AbiCoder();
@@ -28,39 +25,41 @@ async function main(types, params, destAddr, value, data, excessFeeRefundAddress
         l1Provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_ID);
         l2Provider = new ethers.providers.JsonRpcProvider("https://arb1.arbitrum.io/rpc");
         inboxAddress = "0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f";
-    } else if (chainId == 4) {
-        l1Provider = new ethers.providers.JsonRpcProvider("https://rinkeby.infura.io/v3/" + process.env.INFURA_ID);
-        l2Provider = new ethers.providers.JsonRpcProvider("https://rinkeby.arbitrum.io/rpc");
-        inboxAddress = "0x578bade599406a8fe3d24fd7f7211c0911f5b29e";
     } else if (chainId == 31337) {
-        l1Provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/" + process.env.INFURA_ID);
-        l2Provider = new ethers.providers.JsonRpcProvider("https://mainnet.arbitrum.io/rpc");
+        // for simulations
         inboxAddress = "0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f";
     }
 
-    let gasPriceBid, submissionPriceWei;
-    if (chainId != 31337) {
-        const signer = new ethers.Wallet(process.env.PRIVATE_KEY);
-        const l1Signer = signer.connect(l1Provider);
-        const l2Signer = signer.connect(l2Provider);
-        const bridge = await Bridge.init(l1Signer, l2Signer);
-        const newGreetingBytes = encodeParameters(types, params);
-        const newGreetingBytesLength = hexDataLength(newGreetingBytes) + 4;
-        const [_submissionPriceWei] = await bridge.l2Bridge.getTxnSubmissionPrice(newGreetingBytesLength);
-        submissionPriceWei = _submissionPriceWei.mul(5);
+    const newGreetingBytes = encodeParameters(types, params);
+    const bytesLength = hexDataLength(newGreetingBytes) + 4;
+    console.log(`bytesLength:${bytesLength}`);
 
-        gasPriceBid = await bridge.l2Provider.getGasPrice();
-        gasPriceBid = gasPriceBid.mul(ethers.BigNumber.from("2"));
+    const maxGas = 275000;
+    let submissionPriceWei, gasPriceBid;
+    if (chainId != 31337) {
+        const l1ToL2MessageGasEstimate = new L1ToL2MessageGasEstimator(l2Provider);
+        const _submissionPriceWei = await l1ToL2MessageGasEstimate.estimateSubmissionFee(
+            l1Provider,
+            await l1Provider.getGasPrice(),
+            bytesLength
+        );
+        console.log(`_submissionPriceWei:${_submissionPriceWei}`);
+        submissionPriceWei = _submissionPriceWei.mul(5);
+        gasPriceBid = await l2Provider.getGasPrice();
     } else {
         submissionPriceWei = ethers.BigNumber.from("100000000000000");
         gasPriceBid = ethers.BigNumber.from("5000000000");
     }
-
     const callValue = submissionPriceWei.add(gasPriceBid.mul(maxGas));
     const target = inboxAddress;
     const signature = "createRetryableTicket(address,uint256,uint256,address,address,uint256,uint256,bytes)";
     const l2CallValue = value;
     const maxSubmissionCost = submissionPriceWei;
+    console.log({
+        gasPriceBid: gasPriceBid.toString(),
+        submissionPriceWei: submissionPriceWei.toString(),
+        callValue: callValue.toString()
+    });
 
     const calldata = encodeParameters(
         ["address", "uint256", "uint256", "address", "address", "uint256", "uint256", "bytes"],
