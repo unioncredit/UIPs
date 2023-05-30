@@ -9,7 +9,7 @@ module.exports = {
     },
     5: {
         unionTokenAddress: "0x23B0483E07196c425d771240E81A9c2f1E113D3A",
-        governorAddress: "0x88fBf51538dB90b04809f9853a42c764fdFbE888"
+        governorAddress: "0x3402f4F3d724CA9ec188a834D2BAe300045CA6F6"
     },
     42: {
         unionTokenAddress: "0x08AF898e65493D8212c8981FAdF60Ff023A91150",

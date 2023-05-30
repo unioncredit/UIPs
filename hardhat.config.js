@@ -46,6 +46,14 @@ module.exports = {
                 : {
                       mnemonic: process.env.MNEMONIC ? process.env.MNEMONIC : process.env.MNEMONIC_TEST
                   }
+        },
+        goerli: {
+            url: "https://goerli.infura.io/v3/" + process.env.INFURA_ID,
+            accounts: process.env.PRIVATE_KEY
+                ? [process.env.PRIVATE_KEY]
+                : {
+                      mnemonic: process.env.MNEMONIC ? process.env.MNEMONIC : process.env.MNEMONIC_TEST
+                  }
         }
     },
     solidity: {
@@ -67,7 +75,8 @@ module.exports = {
         deployer: {
             default: 0, // here this will by default take the first account as deployer
             1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-            4: 0
+            4: 0,
+            5: 0
         }
     }
 };
