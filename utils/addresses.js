@@ -18,6 +18,7 @@ module.exports = {
     // Use mainnet addresses for hardhat fork simulations
     31337: {
         unionTokenAddress: "0x5Dfe42eEA70a3e6f93EE54eD9C321aF07A85535C",
-        governorAddress: "0xe1b3F07a9032F0d3deDf3E96c395A4Da74130f6e"
+        governorAddress: "0xe1b3F07a9032F0d3deDf3E96c395A4Da74130f6e",
+        arbTimelockAddr: "0xCce4321F377742C4B3FE458B270c2f271d32A5e9"
     }
 };
