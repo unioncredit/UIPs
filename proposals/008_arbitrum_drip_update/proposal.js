@@ -69,17 +69,37 @@ async function getProposalParams(addresses) {
     }
 
     const msg = `
-UIP-008: Create new drip schedule for Arbitrum
+UIP-008: Change Arbitrum dripping schedule and update half decay point of the Comptroller
 
 # Abstract
 
+- Drip of 1 UNION for 6 months to the Comptroller on Arbitrum.
+
+- Set half decay point of the Arbitrum Comptroller to 250,000.
+
 # Motivation
+
+As there is not yet a v2 deployment on Arbitrum, we propose to continue a 1 UNION per block drip for the next 6 months to the users of Union on Arbitrum. At the end of the 6 months we can revisit the question, as it seems likely there will either be an Arbitrum v2 deployment or everyone will have migrated to Union v2 on Optimism.
+
+We also propose lowering the half-decay point to 250k. Now that v2 is insured it doesn't make sense to continue to over incentivize TVL on v1. 
 
 # Specification
 
+- Call Treasury.editSchedule() to change the dripping schedule for Arbitrum. Set the dripStart to be the block number when executed, dripRate to be 1 ether, target to be ArbConnector (0x307ED81138cA91637E432DbaBaC6E3A42699032a), and amount to be 1,296,000
+
+- Set the half decay point of the Arbitrum Comptroller to 250,000
+
 # Test Cases
 
+Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIPs/pull/17)
+
 # Implementation
+
+For Mainnet:
+- Call [Treasury](https://etherscan.io/address/0x6DBDe0E7e563E34A53B1130D6B779ec8eD34B4B9).editSchedule() to update the dripping schedule for the Arbitrum.
+
+For Arbitrum
+- Call [Comptroller](https://arbiscan.io/address/0x641DD6258cb3E948121B10ee51594Dc2A8549fe1).setHalfDecayPoint("250000") to set the half decay point to 250,000.
 
 `;
 
