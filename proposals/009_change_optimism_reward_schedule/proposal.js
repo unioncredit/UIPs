@@ -47,11 +47,11 @@ UIP-009: Change Optimism reward schedule
 
 # Motivation
 
-We propose to continue a 1 UNION per block drip for the next 6 months to the users of Union on Optimism.
+We propose to continue a 1 UNION per block drip for the next 12 months to the users of Union on Optimism.
 
 # Specification
 
-- Call Treasury.editSchedule() to change the dripping schedule for Optimism. Set the dripStart to be the block number when executed, dripRate to be 1 ether, target to be OpConnector (0xF5690129Bf7AD35358Eb2304f4F5B10E0a9B9d65), and amount to be 2628000
+- Call Treasury.editSchedule() to change the dripping schedule for Optimism. Set the dripStart to be the block number when executed, dripRate to be 1 ether, target to be OpConnector ([0xF5690129Bf7AD35358Eb2304f4F5B10E0a9B9d65](https://etherscan.io/address/0xF5690129Bf7AD35358Eb2304f4F5B10E0a9B9d65)), and amount to be 2628000
 
 # Test Cases
 
