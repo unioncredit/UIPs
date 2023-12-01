@@ -1,7 +1,7 @@
 const {ethers} = require("hardhat");
 const {Interface} = require("ethers/lib/utils");
 const UnionTokenABI = require("../../abis/UnionToken.json");
-const opOwnerABI = require("../../abis/OpOwner.json");
+const OpOwnerABI = require("../../abis/OpOwner.json");
 const arbProposeParams = require("../../utils/arbProposeParams.js");
 
 const optimismBridgeAddress = "0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1";
@@ -55,7 +55,7 @@ async function getProposalParams(addresses) {
     }
     // Actions for Optimism
     const opUnion = await ethers.getContractAt(UnionTokenABI, opUnionAddr);
-    const opOwner = await ethers.getContractAt(opOwnerABI, opOwnerAddr);
+    const opOwner = await ethers.getContractAt(OpOwnerABI, opOwnerAddr);
     const iface = new Interface([`function sendMessage(address,bytes,uint32) external`]);
 
     const data = opUnion.interface.encodeFunctionData("disableWhitelist()", []);
