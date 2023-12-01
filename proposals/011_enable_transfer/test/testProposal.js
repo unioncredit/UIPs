@@ -1,4 +1,5 @@
 const {ethers, getChainId, network} = require("hardhat");
+const {expect} = require("chai");
 require("chai").should();
 
 const {parseUnits} = ethers.utils;
@@ -97,5 +98,9 @@ describe("Enable Transferability of the UNION Token", async () => {
         const whitelistEnabled = await unionToken.whitelistEnabled();
         console.log({whitelistEnabled});
         whitelistEnabled.should.eq(false);
+        // Make sure UNION can be transferred
+        await expect(unionToken.connect(unionSigner).transfer(defaultAccount.address, parseUnits("1")))
+            .to.emit(unionToken, "Transfer")
+            .withArgs(unionSigner.address, defaultAccount.address, parseUnits("1"));
     });
 });
