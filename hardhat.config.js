@@ -59,7 +59,7 @@ module.exports = {
     solidity: {
         compilers: [
             {
-                version: "0.8.4",
+                version: "0.8.16",
                 settings: {
                     optimizer: {
                         enabled: true,
@@ -70,7 +70,7 @@ module.exports = {
             }
         ]
     },
-    paths: {sources: "./proposals"},
+    paths: {sources: "./proposals", artifacts: "./artifacts"},
     namedAccounts: {
         deployer: {
             default: 0, // here this will by default take the first account as deployer
