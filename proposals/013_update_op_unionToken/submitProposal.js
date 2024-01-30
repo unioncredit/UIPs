@@ -37,10 +37,10 @@ const {ethers, getChainId, getNamedAccounts} = require("hardhat");
         signedCalldatas,
         ethers.utils.keccak256(myBuffer)
     );
+
     const deadline = await governor.proposalSnapshot(proposalId);
     if (deadline > 0) {
         throw new Error("Duplicated proposals");
     }
-
     await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
 })();

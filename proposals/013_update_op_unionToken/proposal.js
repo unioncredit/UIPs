@@ -3,9 +3,9 @@ const {Interface} = require("ethers/lib/utils");
 const OpOwnerABI = require("../../abis/OpOwner.json");
 const TreasuryABI = require("../../abis/Treasury.json");
 
-const optimismBridgeAddress = "0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1";
 async function getProposalParams(addresses) {
     const {
+        optimismBridgeAddress,
         treasuryAddr,
         newOpConnectorAddr,
         opOwnerAddr,
@@ -18,7 +18,6 @@ async function getProposalParams(addresses) {
 
     const treasury = await ethers.getContractAt(TreasuryABI, treasuryAddr);
     const latestBlock = await ethers.provider.getBlock("latest");
-    console.log({latestBlock});
     const dripStart = latestBlock.number; // the current block number
     const dripRate = ethers.utils.parseEther("1"); // 1 UNION per block
     const target = newOpConnectorAddr;
