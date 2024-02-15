@@ -69,7 +69,45 @@ async function getProposalParams(addresses) {
         iface.encodeFunctionData("sendMessage(address,bytes,uint32)", [opOwnerAddr, executeData, gasLimit])
     );
 
-    const msg = ``;
+    const msg = `
+UIP-013: Update Half Decay Point and Max Stake Parameters
+
+# Abstract
+
+- Set half decay point of the Mainnet Comptroller to 25,000.
+
+- Set half decay point of the Arbitrum Comptroller to 25,000.
+
+- Raise the max stake on Optimism to 25,000.
+
+# Motivation
+
+Now that v2 is insured it doesn't make sense to continue to over incentivize TVL on v1. 
+
+# Specification
+
+- Set the half decay point of the Arbitrum Comptroller to 25,000
+
+- Set the half decay point of the Ethereum Mainnet Comptroller to 25,000
+
+- Raise the max stake on Optimism to 25,000.
+
+# Test Cases
+
+Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIPs/pull/22)
+
+# Implementation
+
+For Mainnet:
+- Call [Comptroller](https://etherscan.io/address/0x216dE4089dCdD7B95BC34BdCe809669C788a9A5d).setHalfDecayPoint("25000") to set the half decay point to 25,000.
+
+For Arbitrum
+- Call [Comptroller](https://arbiscan.io/address/0x641DD6258cb3E948121B10ee51594Dc2A8549fe1).setHalfDecayPoint("25000") to set the half decay point to 25,000.
+
+For Optimism
+- Call [OpOwner](https://optimistic.etherscan.io/address/0x946A2C918F3D928B918C01D813644f27Bcd29D96).execute() to call [UserManager](https://optimistic.etherscan.io/address/0x8E195D65b9932185Fcc76dB5144534e0f3597628).setMaxStakeAmount("25000") to set max stake to 25,000.
+
+    `;
 
     console.log("Proposal contents");
     console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
