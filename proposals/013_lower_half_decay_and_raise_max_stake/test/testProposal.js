@@ -45,7 +45,7 @@ const voteProposal = async governor => {
     });
 };
 
-describe("Change half decay", async () => {
+describe("Update half decay on mainnet", async () => {
     before(async () => {
         await network.provider.request({
             method: "hardhat_reset",

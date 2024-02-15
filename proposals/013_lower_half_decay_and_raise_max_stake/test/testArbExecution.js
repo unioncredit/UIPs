@@ -4,7 +4,7 @@ const {parseUnits} = ethers.utils;
 const ComptrollerABI = require("../../../abis/Comptroller.json");
 
 let defaultAccount, addresses;
-describe("Change half decay on Arbitrum", async () => {
+describe("Update half decay on Arbitrum", async () => {
     before(async () => {
         await network.provider.request({
             method: "hardhat_reset",
