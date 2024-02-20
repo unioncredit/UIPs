@@ -53,7 +53,7 @@ describe("Raise the max stake on Optimism", async () => {
             "function sendMessage(address,bytes,uint32) external",
             "function setMaxStakeAmount(uint96) external"
         ]);
-        const maxStakeAmount = 25000;
+        const maxStakeAmount = "25000000000000000000000";
         const data = iface.encodeFunctionData("setMaxStakeAmount(uint96)", [maxStakeAmount]);
         await opOwner.connect(senderSigner).execute(addresses.opUserManagerAddr, 0, data);
         (await userManager.maxStakeAmount()).should.eq(maxStakeAmount);
