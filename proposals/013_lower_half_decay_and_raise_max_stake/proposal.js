@@ -78,7 +78,7 @@ UIP-013: Update Half Decay Point and Max Stake Parameters
 
 - Set half decay point of the Arbitrum Comptroller to 25,000.
 
-- Raise the max stake on Optimism to 25,000.
+- Raise the max stake on Optimism to 25,000 DAI.
 
 # Motivation
 
@@ -90,7 +90,7 @@ Now that v2 is insured it doesn't make sense to continue to over incentivize TVL
 
 - Set the half decay point of the Ethereum Mainnet Comptroller to 25,000
 
-- Raise the max stake on Optimism to 25,000.
+- Raise the max stake on Optimism to 25,000 DAI.
 
 # Test Cases
 
@@ -105,7 +105,7 @@ For Arbitrum
 - Call [Comptroller](https://arbiscan.io/address/0x641DD6258cb3E948121B10ee51594Dc2A8549fe1).setHalfDecayPoint("25000") to set the half decay point to 25,000.
 
 For Optimism
-- Call [OpOwner](https://optimistic.etherscan.io/address/0x946A2C918F3D928B918C01D813644f27Bcd29D96).execute() to call [UserManager](https://optimistic.etherscan.io/address/0x8E195D65b9932185Fcc76dB5144534e0f3597628).setMaxStakeAmount("25000") to set max stake to 25,000.
+- Call [OpOwner](https://optimistic.etherscan.io/address/0x946A2C918F3D928B918C01D813644f27Bcd29D96).execute() to call [UserManager](https://optimistic.etherscan.io/address/0x8E195D65b9932185Fcc76dB5144534e0f3597628).setMaxStakeAmount("25000000000000000000000") to set max stake to 25,000 DAI.
 
     `;
 
