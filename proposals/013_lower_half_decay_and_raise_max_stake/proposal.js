@@ -50,7 +50,7 @@ async function getProposalParams(addresses) {
     }
 
     // Actions for Optimism
-    const maxStakeAmount = 25000;
+    const maxStakeAmount = "25000000000000000000000";
     const opOwner = await ethers.getContractAt(OpOwnerABI, opOwnerAddr);
     const data = iface.encodeFunctionData("setMaxStakeAmount(uint96)", [maxStakeAmount]);
     const executeData = opOwner.interface.encodeFunctionData("execute(address,uint256,bytes)", [
