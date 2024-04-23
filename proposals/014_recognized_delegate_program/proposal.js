@@ -26,15 +26,15 @@ We propose implementing a recognized delegate program to distribute UNION tokens
 
 # Specification
 
-- Invoke the Treasury.grantToken() function to send 900,000 Union tokens to the multisig wallet.
+- Invoke the Treasury.grantToken() function to send 900,000 Union tokens to the [multisig wallet](https://etherscan.io/address/0xD83b4686e434B402c2Ce92f4794536962b2BE3E8).
 
 # Test Cases
 
-Tests and simulations can be found here: PR
+Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIPs/pull/23)
 
 # Implementation
 
-Call Treasury.grantToken() to send Union tokens to the multisig wallet.
+Call Treasury.grantToken() to send 900,000 Union tokens to the [multisig wallet](https://etherscan.io/address/0xD83b4686e434B402c2Ce92f4794536962b2BE3E8).
 `;
     const TreasuryABI = require("../../abis/Treasury.json");
     const iface = new ethers.utils.Interface(TreasuryABI);
