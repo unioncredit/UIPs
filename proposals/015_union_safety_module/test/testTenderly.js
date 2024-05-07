@@ -5,7 +5,7 @@ const axios = require("axios");
 const {tenderlyWaitNBlocks, increaseTime} = require("../../../utils");
 const {getProposalParams} = require("../proposal.js");
 
-describe("Deploying Cozy Safety Module ...", () => {
+describe("Simulating Cozy Safety Module deployment on Tenderly ...", () => {
     const startBlock = 19816861;
     const {TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY} = process.env;
     const account = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
@@ -46,13 +46,10 @@ describe("Deploying Cozy Safety Module ...", () => {
             ethers.utils.hexValue(ethers.utils.parseUnits("10", "ether").toHexString())
         ]);
 
-        const signerBal = await provider.send("eth_getBalance", [account, "latest"]);
-
-        console.log({signerBal});
+        // const signerBal = await provider.send("eth_getBalance", [account, "latest"]);
+        // console.log({signerBal});
 
         unionSigner = await ethers.provider.getSigner(account);
-
-        console.log({unionSigner});
 
         // assetManagerSigner = await ethers.provider.getSigner(assetManager);
         const UnionGovernorABI = require("../../../abis/UnionGovernor.json");
