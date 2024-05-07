@@ -12,7 +12,7 @@ const unionUser = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address wit
 
 let defaultAccount, governor, unionToken, treasury, multisigWallet;
 
-describe("Deploying Cozy Safety Module ...", async () => {
+describe("Simulating Cozy Safety Module deployment using Hardhat ...", async () => {
     before(async () => {
         await network.provider.request({
             method: "hardhat_reset",
