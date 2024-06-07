@@ -6,7 +6,7 @@ const {tenderlyWaitNBlocks, increaseTime} = require("../../../utils");
 const {getProposalParams} = require("../proposal.js");
 
 describe("Simulating Cozy Safety Module deployment on Tenderly ...", () => {
-    const startBlock = 19816861;
+    const startBlock = 19942000;
     const {TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY} = process.env;
     const account = "0x0fb99055fcdd69b711f6076be07b386aa2718bc6"; //An address with union
 

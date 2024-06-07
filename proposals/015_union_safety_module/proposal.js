@@ -88,7 +88,7 @@ UIP-015: Union Safety Module
 
 # Specification
 
-- Deploying the Union Safety Module requires 3 transactions to the CozyRouter contract (0x707C39F1AaA7c8051287b3b231BccAa8CD72138f)
+- Deploying the Union Safety Module requires 3 transactions to the CozyRouter contract (0xC58F8634E085243CC661b1623B3bC3224D80B439)
 
 1. Deploying the governance-controlled trigger contract
 1. Deploying the Safety Module
@@ -96,7 +96,7 @@ UIP-015: Union Safety Module
 
 # Test Cases
 
-Tests and simulations can be found here: [PR](https://github.com/unioncredit/UIPs/pull/24)
+Tests and simulations can be found [here](https://github.com/unioncredit/UIPs/pull/24)
 
 # Implementation
 - Deploying the governance-controlled trigger contract by calling CozyRouter.deployOwnableTrigger(address,(string,string,string,string),bytes32)
