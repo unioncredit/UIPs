@@ -106,7 +106,6 @@ Tests and simulations can be found [here](https://github.com/unioncredit/UIPs/pu
 `;
     const CozyRouterABI = require("./abis/CozyRouter.json");
     const iface = new ethers.utils.Interface(CozyRouterABI);
-    console.log({iface});
     const signedCalldatas = [];
 
     for (i = 0; i < funcSigs.length; i++) {
