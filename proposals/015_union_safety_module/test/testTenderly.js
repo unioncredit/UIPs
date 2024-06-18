@@ -66,26 +66,8 @@ describe("Simulating Cozy Safety Module deployment on Tenderly ...", () => {
     before(deployAndInitContracts);
 
     it("Submit proposal", async () => {
-        const {
-            cozyRouter,
-            cozyMetadataRegistry,
-            timelock,
-            safetyModulePauser,
-            reservePoolAsset,
-            triggerPayoutHandler,
-            unionTrigger,
-            unionSafetyModule
-        } = require(`../addresses.js`)[await getChainId()];
-        const {targets, values, funcSigs, calldatas, msg} = await getProposalParams({
-            cozyRouter,
-            cozyMetadataRegistry,
-            timelock,
-            safetyModulePauser,
-            reservePoolAsset,
-            triggerPayoutHandler,
-            unionTrigger,
-            unionSafetyModule
-        });
+        const addresses = require(`../addresses.js`)[await getChainId()];
+        const {targets, values, funcSigs, calldatas, msg} = await getProposalParams(addresses);
 
         const tx = await governor["propose(address[],uint256[],string[],bytes[],string)"](
             targets,
@@ -126,15 +108,28 @@ describe("Simulating Cozy Safety Module deployment on Tenderly ...", () => {
     });
 
     it("Validate results", async () => {
-        const {unionSafetyModule} = require(`../addresses.js`)[await getChainId()];
-        const SafetyModuleABI = require("../abis/SafetyModule.json");
+        const {unionSafetyModule, rewardsManager, unionTokenAddress, stakePoolAsset} =
+            require(`../addresses.js`)[await getChainId()];
 
+        const SafetyModuleABI = require("../abis/SafetyModule.json");
         const unionSM = await ethers.getContractAt(SafetyModuleABI, unionSafetyModule);
 
         const {configUpdateDelay, configUpdateGracePeriod, withdrawDelay} = await unionSM.delays();
         configUpdateDelay.toString().should.eq("1814400");
         configUpdateGracePeriod.toString().should.eq("1814400");
         withdrawDelay.toString().should.eq("1209600");
+
+        // validate rewards manager
+        const RewardsManagerABI = require("../abis/RewardsManager.json");
+        const rewardsManagerContract = await ethers.getContractAt(RewardsManagerABI, rewardsManager);
+
+        const rewardsPools = await rewardsManagerContract.getRewardPools();
+        const stakePools = await rewardsManagerContract.getStakePools();
+
+        console.log({rewardsPools, stakeToken: stakePools});
+
+        rewardsPools[0]["asset"].should.eq(unionTokenAddress);
+        stakePools[0]["asset"].should.eq(stakePoolAsset);
     });
 
     it("delete fork", async function () {
