@@ -1,0 +1,108 @@
+[
+    {
+        "inputs": [],
+        "name": "allowedRewardPools",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "allowedStakePools",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getRewardPools",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "undrippedRewards",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cumulativeDrippedRewards",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "lastDripTime",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "asset",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IDripModel",
+                        "name": "dripModel",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IReceiptToken",
+                        "name": "depositReceiptToken",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct RewardPool[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getStakePools",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "asset",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IReceiptToken",
+                        "name": "stkReceiptToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "rewardsWeight",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct StakePool[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
