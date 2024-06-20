@@ -108,6 +108,7 @@ UIP-015: Union Safety Module
 
 # Abstract
 
+Deploy the Cozy Safety Module for UNION.
 
 # Specification
 
