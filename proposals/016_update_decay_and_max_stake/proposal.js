@@ -83,7 +83,7 @@ async function getProposalParams(addresses) {
     );
 
     // set max stake
-    const maxStakeAmount = "25000000000000000000000";
+    const maxStakeAmount = "50000000000000000000000";
     const opSetMaxStakeAmountCalldata = iface.encodeFunctionData("setMaxStakeAmount(uint96)", [maxStakeAmount]);
     const executeData = opOwner.interface.encodeFunctionData("execute(address,uint256,bytes)", [
         opUserManagerAddr,
