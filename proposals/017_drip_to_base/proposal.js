@@ -33,7 +33,7 @@ async function getProposalParams(addresses) {
         treasury.interface.encodeFunctionData("addSchedule(uint256,uint256,address,uint256)", newScheduleParams)
     ];
 
-    // For Optimism
+    // For Base
 
     const gasLimit = 2000000;
 
@@ -66,7 +66,7 @@ async function getProposalParams(addresses) {
     );
 
     const msg = `
-UIP-017: Drip UNION to Base comptroller
+UIP-017: Drip UNION to Base
 
 ## Abstract
 In order to support Union on Base, UNION token will need to be distributed to participants. The L1 treasury will drip UNION token to the Base comptroller. An intermediary contract (BaseConnector) is added to connect L1 treasury to the Union Base comptroller.
@@ -75,7 +75,7 @@ In order to support Union on Base, UNION token will need to be distributed to pa
 Protocol participants will need to be able to claim UNION on the Base Network. Therefore, the Union protocol comptroller on the Base network needs to have UNION continuously dripped over.
 
 ## Specification
-- Set half decay point of the Optimism Comptroller to 100,000.
+- Set half decay point of the Base Comptroller to 100,000.
 - Add OpConnector contract to be a new dripping target of the Treasury, and set the dripping rate to be 1 UNION per block in a total amount of 2,628,000 UNION tokens, which will last for one year at the current Ethereum block minting rate (12 seconds per block)
 
 ## Rationale
@@ -97,7 +97,7 @@ On Mainnet
     - target address: [BaseConnector](https://etherscan.io/address/0x307ED81138cA91637E432DbaBaC6E3A42699032a)
     - total amount: 2,628,000
 
-On Optimism:
+On Base:
 
 - Call [OpOwner](https://basescan.org/address/0x20473Af81162B3E79F0333A2d8D64C88a71B88e8).execute() to call [Comptroller](https://basescan.org/address/0x37C092D275E48e3c9001059D9B7d55802CbDbE04).setHalfDecayPoint("100000") to set the half decay point to 100,000.
 `;
