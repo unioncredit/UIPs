@@ -2,7 +2,7 @@ const {ethers, getChainId, network} = require("hardhat");
 const {expect} = require("chai");
 require("chai").should();
 
-const {parseUnits} = ethers.utils;
+const {parseUnits, formatUnits} = ethers.utils;
 const {waitNBlocks, increaseTime} = require("../../../utils/index.js");
 const {getProposalParams} = require("../proposal.js");
 const ComptrollerABI = require("../../../abis/Comptroller.json");
@@ -93,16 +93,19 @@ describe("Drip UNION to Base comptroller", async () => {
 
     it("Validate results", async () => {
         const connectorAddress = addresses.baseConnectorAddress;
-        const prevBalance = await unionToken.balanceOf(connectorAddress);
-        console.log(ethers.utils.formatUnits(prevBalance));
 
         const TreasuryABI = require("../../../abis/Treasury.json");
         const treasury = await ethers.getContractAt(TreasuryABI, addresses.treasuryAddress);
         await treasury.drip(connectorAddress);
+        const prevBalance = await unionToken.balanceOf(connectorAddress);
+        // console.log(formatUnits(prevBalance));
+
+        // drip again to make sure the dripping rate is 1 Union per block
+        await treasury.drip(connectorAddress);
 
         const newBalance = await unionToken.balanceOf(connectorAddress);
-        console.log(ethers.utils.formatUnits(newBalance));
+        // console.log(formatUnits(newBalance));
 
-        newBalance.should.gt(prevBalance);
+        newBalance.should.eq(prevBalance.add(parseUnits("1")));
     });
 });
