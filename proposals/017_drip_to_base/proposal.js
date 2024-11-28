@@ -76,7 +76,7 @@ Protocol participants will need to be able to claim UNION on the Base Network. T
 
 ## Specification
 - Set half decay point of the Base Comptroller to 100,000.
-- Add OpConnector contract to be a new dripping target of the Treasury, and set the dripping rate to be 1 UNION per block in a total amount of 2,628,000 UNION tokens, which will last for one year at the current Ethereum block minting rate (12 seconds per block)
+- Add BaseConnector contract to be a new dripping target of the Treasury, and set the dripping rate to be 1 UNION per block in a total amount of 2,628,000 UNION tokens, which will last for one year at the current Ethereum block minting rate (12 seconds per block)
 
 ## Rationale
 Adding a treasury on L2 was considered, but there was no identifiable upside for going this route. Adding a comptroller provided the same benefits with lower effort.
