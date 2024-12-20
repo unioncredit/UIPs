@@ -1,15 +1,16 @@
 const { ethers, getChainId, network } = require("hardhat");
 require("chai").should();
-const { parseUnits, formatBytes32String } = ethers.utils;
+const { parseUnits } = ethers.utils;
 const { Interface } = require("ethers/lib/utils");
 const { increaseTime } = require("../../../utils/index.js");
 
 const TimelockABI = require("../../../abis/TimelockController.json");
 
-let defaultAccount, addresses, senderSigner, propId;
+let defaultAccount, addresses, senderSigner, propId, dripStartBlock, calldatas, targets, predecessor, salt;
 const unionAdminSafe = "0xD83b4686e434B402c2Ce92f4794536962b2BE3E8";
 const timelockAddr = "0xBBD3321f377742c4b3fe458b270c2F271d3294D8"
 const treasuryAddr = "0x6DBDe0E7e563E34A53B1130D6B779ec8eD34B4B9"
+const newBaseConnectorAddr = "0xB6a2cD094dD1aabCf02f4069155957d640eb41C7"
 describe("Add drip for Base", async () => {
     before(async () => {
         await network.provider.request({
@@ -18,7 +19,7 @@ describe("Add drip for Base", async () => {
                 {
                     forking: {
                         jsonRpcUrl: "https://eth-mainnet.g.alchemy.com/v2/" + process.env.ALCHEMY_API_KEY,
-                        blockNumber: 21435601
+                        blockNumber: 21436680
                     }
                 }
             ]
@@ -40,39 +41,45 @@ describe("Add drip for Base", async () => {
         });
     });
 
-    it("Simulate schedule()", async () => {
-        const { baseComptrollerAddr } = addresses;
-        // console.log({ baseComptrollerAddr });
+    it("schedule()", async () => {
+        const { baseConnectorAddress } = addresses;
+        console.log({ baseConnectorAddress });
 
-        const ifaceTreasury = new Interface(["function addSchedule(uint256,uint256,address,uint256) external"]);
+        const ifaceTreasury = new Interface(["function addSchedule(uint256,uint256,address,uint256) external", "function editSchedule(uint256,uint256,address,uint256) external"]);
 
         const currBlock = await ethers.provider.getBlock("latest");
-        const calldatas = ifaceTreasury.encodeFunctionData("addSchedule(uint256,uint256,address,uint256)",
-            [currBlock.timestamp, parseUnits("1"), baseComptrollerAddr, parseUnits("2628000")]);
+        dripStartBlock = currBlock.number + 60 * 60 * 24 / 12; // use the block number when executed
+        console.log({ dripStartBlock });
+        targets = [treasuryAddr, treasuryAddr];
+        calldatas = [
+            ifaceTreasury.encodeFunctionData("editSchedule(uint256,uint256,address,uint256)",
+                [dripStartBlock, parseUnits("0"), baseConnectorAddress, parseUnits("0")]),
+            ifaceTreasury.encodeFunctionData("addSchedule(uint256,uint256,address,uint256)",
+                [dripStartBlock, parseUnits("1"), newBaseConnectorAddr, parseUnits("2628000")])
+        ];
+        predecessor = ethers.constants.HashZero;
+        salt = ethers.utils.formatBytes32String("0");
+
+        console.log({ targets, calldatas, predecessor, salt });
 
         const timelock = await ethers.getContractAt(TimelockABI, timelockAddr);
-        const tx = await timelock.connect(senderSigner).schedule(treasuryAddr, 0, calldatas, formatBytes32String("0"), formatBytes32String("1"), 86400);
-        console.log({ tx });
+        const tx = await timelock.connect(senderSigner).scheduleBatch(
+            targets,
+            [0, 0], // values
+            calldatas,
+            predecessor,
+            salt,
+            86400);
+        // console.log({ tx });
         const result = await tx.wait();
         const events = result.events;
-        console.log({ events: result.events });
+        // console.log({ events: result.events });
         console.log({ event: events[0].args });
 
         propId = events[0].args.id;
-
-        // console.log({ currHalfDecayPoint });
-        // await baseOwner.connect(senderSigner).execute(baseComptrollerAddr, 0, setHalfDecayPointCalldata);
     });
 
-    it("Simulate execute()", async () => {
-        const { baseComptrollerAddr } = addresses;
-        console.log({ baseComptrollerAddr });
-
-        const ifaceTreasury = new Interface(["function addSchedule(uint256,uint256,address,uint256) external"]);
-
-        const calldatas = ifaceTreasury.encodeFunctionData("addSchedule(uint256,uint256,address,uint256)",
-            [(await ethers.provider.getBlock("latest")).timestamp, parseUnits("1"), baseComptrollerAddr, parseUnits("2628000")]);
-
+    it("execute()", async () => {
         const oldBlock = await ethers.provider.getBlock("latest");
         // console.log({ oldBlock })
 
@@ -86,6 +93,12 @@ describe("Add drip for Base", async () => {
         const isReady = await timelock.isOperationReady(propId);
         console.log({ isReady });
 
-        await timelock.connect(senderSigner).execute(treasuryAddr, 0, calldatas, formatBytes32String("0"), formatBytes32String("1"));
+        await timelock.connect(senderSigner).executeBatch(
+            targets,
+            [0, 0], // values
+            calldatas,
+            predecessor,
+            salt
+        );
     });
 });
