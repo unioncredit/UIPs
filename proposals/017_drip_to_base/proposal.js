@@ -1,10 +1,10 @@
-const {ethers} = require("hardhat");
-const {Interface} = require("ethers/lib/utils");
+const { ethers } = require("hardhat");
+const { Interface } = require("ethers/lib/utils");
 const OpOwnerABI = require("../../abis/OpOwner.json");
 const TreasuryABI = require("../../abis/Treasury.json");
 
 async function getProposalParams(addresses) {
-    const {treasuryAddress, baseConnectorAddress, baseOwnerAddr, baseComptrollerAddr, baseBridgeAddress} = addresses;
+    const { treasuryAddress, baseConnectorAddress, baseOwnerAddr, baseComptrollerAddr, baseBridgeAddress } = addresses;
 
     if (!(treasuryAddress && baseConnectorAddress && baseOwnerAddr && baseComptrollerAddr && baseBridgeAddress)) {
         throw new Error("address error");
@@ -103,9 +103,9 @@ On Base:
 `;
 
     console.log("Proposal contents");
-    console.log({targets, values, sigs, calldatas, signedCalldatas, msg});
+    console.log({ targets, values, sigs, calldatas, signedCalldatas, msg });
 
-    return {targets, values, sigs, calldatas, signedCalldatas, msg};
+    return { targets, values, sigs, calldatas, signedCalldatas, msg };
 }
 
 module.exports = {

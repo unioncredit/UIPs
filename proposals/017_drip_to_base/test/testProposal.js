@@ -1,10 +1,10 @@
-const {ethers, getChainId, network} = require("hardhat");
-const {expect} = require("chai");
+const { ethers, getChainId, network } = require("hardhat");
+const { expect } = require("chai");
 require("chai").should();
 
-const {parseUnits, formatUnits} = ethers.utils;
-const {waitNBlocks, increaseTime} = require("../../../utils/index.js");
-const {getProposalParams} = require("../proposal.js");
+const { parseUnits, formatUnits } = ethers.utils;
+const { waitNBlocks, increaseTime } = require("../../../utils/index.js");
+const { getProposalParams } = require("../proposal.js");
 const ComptrollerABI = require("../../../abis/Comptroller.json");
 const UnionGovernorABI = require("../../../abis/UnionGovernor.json");
 const UnionTokenABI = require("../../../abis/UnionToken.json");
@@ -81,9 +81,9 @@ describe("Drip UNION to Base comptroller", async () => {
     });
 
     it("Submit proposal", async () => {
-        console.log({addresses});
+        console.log({ addresses });
 
-        const {targets, values, sigs, calldatas, msg} = await getProposalParams(addresses);
+        const { targets, values, sigs, calldatas, msg } = await getProposalParams(addresses);
         await governor["propose(address[],uint256[],string[],bytes[],string)"](targets, values, sigs, calldatas, msg);
     });
 
